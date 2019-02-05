@@ -14,6 +14,8 @@ from services.crypto_price import crypto_price
 from services.crypto_news import crypto_news
 from services.tweet import tweet
 from services.calculator import calc
+from services.OCR import ocr_space_file
+from services.OCR import ocr_space_url
 
 # provide bot token from TOKEN envVar or config file
 TOKEN = os.environ.get('TOKEN')
@@ -120,7 +122,9 @@ def handle_updates(updates):
                     '/crypto_news - latest cryptocurrency news\n'
                     '/news - latest news from BBC\n'
                     '/weather - Temperature in Zagazig now\n'
-                    '/calc expression - calculate expression\n')
+                    '/calc expression - calculate expression\n'
+                    '/urlImage-text [url] - extract text from image\n')
+
 
             elif text == '/help':  # handle /help command
                 send_message(
@@ -135,7 +139,9 @@ def handle_updates(updates):
                     '/crypto_news - latest cryptocurrency news\n'
                     '/news - latest news from BBC\n'
                     '/weather - Temperature in Zagazig now\n'
-                    '/calc expression - calculate expression\n')
+                    '/calc expression - calculate expression\n'
+                    '/urlImage-text [url] - extract text from image\n')
+                    
 
             elif text.startswith('/translate '):  # /translate command
                 message = ' '.join(text.split(' ')[1:])  # msg to translate
@@ -175,6 +181,13 @@ def handle_updates(updates):
             elif text.startswith('/calc '):
                 message = ' '.join(text.split(' ')[1:])
                 result = calc(message)
+                send_message(chat, result)
+                
+            elif text.startswith('/urlImage-text '):
+                message = ' '.join(text.split(' ')[1:])
+                temp = ocr_space_url(url = message)
+                temp = temp.json()
+                result =temp['ParsedResults'][0]['ParsedText']
                 send_message(chat, result)
 
             # Add your Commands Below in the following form
