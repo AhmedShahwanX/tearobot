@@ -24,7 +24,7 @@ def ocr_space_file(filename, overlay=False, api_key='df600dbb0988957', language=
                           files={filename: f},
                           data=payload,
                           )
-    return r.content.decode()
+    return r
 
 
 def ocr_space_url(url, overlay=False, api_key='df600dbb0988957', language='eng'):
@@ -49,7 +49,7 @@ def ocr_space_url(url, overlay=False, api_key='df600dbb0988957', language='eng')
     r = requests.post('https://api.ocr.space/parse/image',
                       data=payload,
                       )
-    return r.content.decode()
+    return r
 
 
 # Use examples:
