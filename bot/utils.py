@@ -1,24 +1,24 @@
 """
     Helper functions to be used inside the project
 """
-from .commands import start_command, help_command, weather, translate, calculate, tweet, ocr_url
+from .commands import start_command, help_command, weather, translate, calculate, tweet, ocr_url, stop
 
 
 def is_available_command(command):
     """Checks if ``command`` is available in TBot commands"""
-    available_commands = ["/start", "/help", "/weather", "/translate", "/calculate", "/tweet", "/ocr_url"]
+    available_commands = ["/start", "/help", "/weather", "/translate", "/calculate", "/tweet", "/ocr_url", "/stop"]
+
     if command in available_commands:
         return True
     return False
 
 
-def command_takes_arguments(command):
-    """Checks if ``command`` operates on arguments or not"""
-    commands_with_argument = ["/translate", "/calculate", "/tweet", "/ocr_url"]
-    if command in commands_with_argument:
+def command_takes_input(command):
+    """Checks if ``command`` operates on inputs or not"""
+    takes_input = ["/translate", "/calculate", "/tweet", "/ocr_url"]
+    if command in takes_input:
         return True
     return False
-
 
 def get_hint_message(command):
     """Returns a hint message of ``command``"""
@@ -29,7 +29,9 @@ def get_hint_message(command):
         "/translate": "I will translate your next message from english to arabic",
         "/calculate": "Write a mathematical expression to calculate",
         "/tweet": "Let's tweet on TBot's twitter account!",
-        "/ocr_url":   "Send the URL of the image you want to extract text from"
+        "/ocr_url":   "Send the URL of the image you want to extract text from",
+        "/stop": ""
+
     }
     return commands_hint.get(command)
 
@@ -43,6 +45,8 @@ def get_command_handler(command):
         "/translate": translate,
         "/calculate": calculate,
         "/tweet": tweet,
-        "/ocr_url": ocr_url
+        "/ocr_url": ocr_url,
+        "/stop": stop
     }
     return command_service.get(command)
+
