@@ -1,7 +1,7 @@
 import logging
 import logging.config
 
-def config_logger(name, filename):
+def config_logger(name):
     logging.config.dictConfig({
     
     "version": 1,
@@ -33,20 +33,33 @@ def config_logger(name, filename):
             "backupCount": 5,
             "encoding": "utf8"
         },
+        "debug_file_handler": {
+            "class": "logging.handlers.RotatingFileHandler",
+            "level": "DEBUG",
+            "formatter": "simple",
+            "filename": "debug.log",
+            "maxBytes": 41943040,
+            "backupCount": 5,
+            "encoding": "utf8"
+        }
         # add handlers here.
     },
 
     "loggers": {
         "debugger": {
             "level": "DEBUG",
-            "handlers": ["console"],
+            "handlers": ["console","debug_file_handler"],
             "propagate": False
         },
         "infologger": {
             "level": "INFO",
-            "handlers": ["info_file_handler"]
-        }
-        #add loggers here.
+            "handlers": ["debug_file_handler","info_file_handler"]
+        },
+        "root": {
+            "level": "DEBUG",
+            "handlers": ["console","debug_file_handler", "info_file_handler"]
     }
+        #add loggers here.
+    },
 })
-    return name
+    return logging.getLogger(name)
