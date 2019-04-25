@@ -146,3 +146,19 @@ class DBHelper():
         except Error as err:
             self.conn.rollback()
             exit(err)
+
+
+    def get_schedule(self) -> list:
+        """Fetch schedule data """
+        try:
+            sql = "SELECT * FROM Schedule Where id = ?"
+            result = self.cur.execute(sql)
+            rows = [row for row in result]
+            return rows
+
+            self.conn.commit()
+            return True
+        except Error as err:
+            self.conn.rollback()
+            exit(err)
+

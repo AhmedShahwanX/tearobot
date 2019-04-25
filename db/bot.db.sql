@@ -22,4 +22,17 @@ CREATE TABLE IF NOT EXISTS "User" (
 	"last_command"	TEXT,
 	PRIMARY KEY("id")
 );
+
+CREATE TABLE IF NOT EXISTS "Schedule" (
+	"id"	INTEGER NOT NULL UNIQUE,
+	
+	"time"	INTEGER NOT NULL,
+	"saturday"	TEXT ,
+	"sunday"	TEXT ,
+	"monday"	TEXT ,
+	"tuesday"	TEXT ,
+	"wednesday"	TEXT ,
+	"thursday"	TEXT ,
+	PRIMARY KEY("id")
+);
 COMMIT;
