@@ -1,14 +1,19 @@
 BEGIN TRANSACTION;
-CREATE TABLE IF NOT EXISTS "Message" (
+CREATE TABLE
+IF NOT EXISTS "Message"
+(
 	"id"	INTEGER NOT NULL UNIQUE,
 	"update_id"	INTEGER NOT NULL UNIQUE,
 	"user_id"	INTEGER NOT NULL,
 	"chat_id"	INTEGER NOT NULL,
 	"date"	INTEGER NOT NULL,
 	"text"	TEXT,
-	PRIMARY KEY("id")
+	PRIMARY KEY
+("id")
 );
-CREATE TABLE IF NOT EXISTS "User" (
+CREATE TABLE
+IF NOT EXISTS "User"
+(
 	"id"	INTEGER NOT NULL UNIQUE,
 	"is_bot"	INTEGER NOT NULL DEFAULT 0,
 	"is_admin"	INTEGER NOT NULL DEFAULT 0,
@@ -41,4 +46,28 @@ CREATE TABLE IF NOT EXISTS "Schedule" (
 	"thursday"	TEXT,
 	PRIMARY KEY("id")
 );
+
+CREATE TABLE IF NOT EXISTS "Schedule" (
+	"id"	INTEGER NOT NULL UNIQUE,
+	
+	"time"	INTEGER NOT NULL,
+	"saturday"	TEXT ,
+	"sunday"	TEXT ,
+	"monday"	TEXT ,
+	"tuesday"	TEXT ,
+	"wednesday"	TEXT ,
+	"thursday"	TEXT ,
+	PRIMARY KEY("id")
+);
+CREATE TABLE
+IF NOT EXISTS "Everyday"
+(
+	"Day"	TEXT NOT NULL UNIQUE,
+	"first"	TEXT ,
+	"Second"	TEXT ,
+	"Break"	TEXT ,
+	"third"		TEXT ,
+	PRIMARY KEY("Day")
+);
+
 COMMIT;
