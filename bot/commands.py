@@ -8,6 +8,7 @@ import urllib
 import requests
 import tweepy
 from .db import DBHelper
+from .data_types import Announcement
 
 
 def help_command():
@@ -134,3 +135,14 @@ def events():
 
 def stop(db: DBHelper, user_id: int, updated: int, active: bool):
     db.set_user_status(user_id, updated, active)
+
+
+def new_announcement(arguments_list):
+    ann = Announcement
+    ann.id = 1#int(arguments_list[0])
+    ann.time = 1#int(arguments_list[1])
+    ann.description = "des"#arguments_list[2]
+    ann.cancelled = False
+    db = DBHelper()
+    db.add_announcement(ann)
+    return "done"
