@@ -76,3 +76,11 @@ def get_num_of_args(command):
         "/new_announcement": 3
     }
     return command_args.get(command)
+
+
+def command_takes_db(command):
+    db_commands = ["/new_announcement"]
+    if command in db_commands:
+        return true
+    return False
+
