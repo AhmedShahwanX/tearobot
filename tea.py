@@ -5,7 +5,8 @@ import os
 import urllib
 
 # -------- project modules
-from bot.utils import is_available_command, command_takes_input, get_hint_message, get_command_handler
+from bot.utils import is_available_command, command_takes_input, get_hint_message, get_command_handler,\
+    is_admin_command, get_num_of_args
 from bot.db import DBHelper
 from bot.data_types import Message, User
 from loggingconfigs import config_logger
@@ -44,10 +45,14 @@ def last_update_id(updates):
 
 
 current_command = None  # stores currently operating command
+num_of_arguments = 0
+arg = ["", "", "", ""]
 
 
 def handle_updates(updates: list, db: DBHelper):
     """Handles incoming updates to the bot"""
+    global num_of_arguments
+    global arg
     global current_command  # use current_command var from global scope
     for update in updates:  # loop through updates
         # db.add_message((id: int, update_id: int, user_id: int, chat_id: int, date: int(unix_timestamp), text: str))
@@ -122,9 +127,19 @@ def handle_updates(updates: list, db: DBHelper):
                         log.info('command: "' + current_command + '" is available.')
                         db.set_user_last_command(user.id, time.time(), current_command)  # update user's last command
                         if command_takes_input(current_command):  # if command operates on inputs
-                            hint_message = get_hint_message(current_command)  # get command hint message
-                            send_message(chat, hint_message)  # send a help message to receive inputs later
-                            log.info('sending hint message to user... done')
+                            num_of_arguments = get_num_of_args(current_command)
+                            if is_admin_command(current_command):
+                                if user.is_admin:
+                                    hint_message = get_hint_message(current_command)  # get command hint message
+                                    send_message(chat, hint_message)  # send a help message to receive inputs later
+                                    log.info('sending hint message to user... done')
+                                else:
+                                    send_message(chat, "you have to be admin to run this command")
+                                    current_command = None
+                            else:
+                                hint_message = get_hint_message(current_command)  # get command hint message
+                                send_message(chat, hint_message)  # send a help message to receive inputs later
+                                log.info('sending hint message to user... done')
                         else:  # if command is available and does not operate on inputs
                             log.info('command: "' + current_command + '" has no argument.')
                             # execute command directly
@@ -148,9 +163,13 @@ def handle_updates(updates: list, db: DBHelper):
                     log.info("working on user's last command.. " + str(user.last_command))
                     last_command = user.last_command
                     if command_takes_input(last_command):  # should be an argument if current_command is set
-                        log.info('received command arguments from user...')
-                        send_message(chat, get_command_handler(last_command)(text))
-                        log.info('sending message to user... done')
+                        if num_of_arguments >= 1:
+                            arg[num_of_arguments-1] = text
+                            num_of_arguments = num_of_arguments-1
+                            log.info('received command arguments from user...')
+                            if num_of_arguments == 0:
+                                send_message(chat, get_command_handler(last_command)(arg))
+                                log.info('sending message to user... done')
                     elif current_command == "/start" or current_command == "/stop":
                         continue  # skip
                     else:
