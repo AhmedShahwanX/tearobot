@@ -6,7 +6,7 @@ import urllib
 
 # -------- project modules
 from bot.utils import is_available_command, command_takes_input, get_hint_message, get_command_handler,\
-    is_admin_command, get_num_of_args
+    is_admin_command, get_num_of_args, command_takes_db
 from bot.db import DBHelper
 from bot.data_types import Message, User
 from loggingconfigs import config_logger
@@ -168,8 +168,11 @@ def handle_updates(updates: list, db: DBHelper):
                             num_of_arguments = num_of_arguments-1
                             log.info('received command arguments from user...')
                             if num_of_arguments == 0:
-                                send_message(chat, get_command_handler(last_command)(arg))
-                                log.info('sending message to user... done')
+                                if command_takes_db(last_command):
+                                    send_message(chat, get_command_handler(last_command)(db, arg))
+                                    log.info('sending message to user... done')
+                                else:
+                                    send_message(chat, get_command_handler(last_command)(arg))
                     elif current_command == "/start" or current_command == "/stop":
                         continue  # skip
                     else:
