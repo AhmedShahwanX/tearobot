@@ -81,6 +81,6 @@ def get_num_of_args(command):
 def command_takes_db(command):
     db_commands = ["/new_announcement"]
     if command in db_commands:
-        return true
+        return True
     return False
 
