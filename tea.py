@@ -169,7 +169,7 @@ def handle_updates(updates: list, db: DBHelper):
                             log.info('received command arguments from user...')
                             if num_of_arguments == 0:
                                 if command_takes_db(last_command):
-                                    send_message(chat, get_command_handler(last_command)(db, arg))
+                                    send_message(chat, get_command_handler(last_command)(db, arg))  # arguments reversed
                                     log.info('sending message to user... done')
                                 else:
                                     send_message(chat, get_command_handler(last_command)(arg))

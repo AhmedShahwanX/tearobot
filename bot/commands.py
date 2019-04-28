@@ -138,6 +138,6 @@ def stop(db: DBHelper, user_id: int, updated: int, active: bool):
 
 
 def new_announcement(db: DBHelper, arguments_list):
-    ann = Announcement(int(arguments_list[0]), int(arguments_list[1]), arguments_list[2], False)
+    ann = Announcement(int(arguments_list[2]), int(arguments_list[1]), arguments_list[0], False)
     db.add_announcement(ann)
     return "done"
